@@ -21,7 +21,7 @@ authenticator = stauth.Authenticate(
     credentials_copy, config['name'], config['key'], config['expiry_days']
 )
 
-name, authentication_status, username = authenticator.login('Entrar no Sistema', 'main')
+name, authentication_status, username = authenticator.login(location='main')
 
 if authentication_status is False:
     st.error('Usuário ou senha incorretos')
