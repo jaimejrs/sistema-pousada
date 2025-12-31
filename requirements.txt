@@ -2,7 +2,7 @@ streamlit
 pandas
 SQLAlchemy
 psycopg2-binary
-streamlit-authenticator==0.1.5
+streamlit-authenticator
 PyYAML
 altair
 faker
