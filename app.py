@@ -24,14 +24,16 @@ authenticator = stauth.Authenticate(
 
 authenticator.login(location='main')
 
-if st.session_state["authentication_status"] is False:
+authentication_status = st.session_state.get("authentication_status")
+name = st.session_state.get("name")
+username = st.session_state.get("username")
+
+if authentication_status is False:
     st.error('Usuário ou senha incorretos')
     st.stop()
-elif st.session_state["authentication_status"] is None:
+elif authentication_status is None:
     st.warning('Por favor, faça login.')
     st.stop()
-
-name = st.session_state["name"]
 
 # BARRA LATERAL
 with st.sidebar:
