@@ -1,0 +1,18 @@
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Banco
+*.db
+*.sqlite3
+
+
+# Segcrets
+.streamlit/secrets.toml
+
+# Logs
+.DS_Store
+
