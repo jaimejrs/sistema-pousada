@@ -1,7 +1,7 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 import os
-import json
+from collections.abc import Mapping
 from models import Session
 from utils import local_css
 from views import dashboard, mapa, reservas, clientes, quartos
@@ -10,6 +10,14 @@ from views import dashboard, mapa, reservas, clientes, quartos
 st.set_page_config(page_title="Recanto da Lagoa", layout="wide", page_icon="🏖️")
 local_css()
 
+def _to_plain(obj):
+    
+    if isinstance(obj, Mapping):
+        return {k: _to_plain(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_to_plain(item) for item in obj]
+    return obj
+
 # AUTENTICAÇÃO
 try:
     config = st.secrets["auth"]
@@ -17,7 +25,7 @@ except:
     st.error("Erro: arquivo secrets.toml não encontrado ou mal configurado.")
     st.stop()
 
-credentials_copy = json.loads(json.dumps(config['credentials']))
+credentials_copy = _to_plain(config['credentials'])
 
 authenticator = stauth.Authenticate(
     credentials_copy, 
@@ -25,7 +33,6 @@ authenticator = stauth.Authenticate(
     config['key'], 
     config['expiry_days']
 )
-
 
 authenticator.login(location='main')
 
