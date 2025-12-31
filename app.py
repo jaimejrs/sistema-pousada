@@ -5,7 +5,7 @@ from models import Session
 from utils import local_css
 from views import dashboard, mapa, reservas, clientes, quartos
 
-# CONF PAGE
+# -CONFIG
 st.set_page_config(page_title="Recanto da Lagoa", layout="wide", page_icon="🏖️")
 local_css()
 
@@ -17,26 +17,31 @@ except:
     st.stop()
 
 credentials_copy = dict(config['credentials'])
+
 authenticator = stauth.Authenticate(
     credentials_copy, config['name'], config['key'], config['expiry_days']
 )
 
-name, authentication_status, username = authenticator.login(location='main')
+authenticator.login(location='main')
 
-if authentication_status is False:
+if st.session_state["authentication_status"] is False:
     st.error('Usuário ou senha incorretos')
     st.stop()
-elif authentication_status is None:
+elif st.session_state["authentication_status"] is None:
     st.warning('Por favor, faça login.')
     st.stop()
+
+name = st.session_state["name"]
 
 # BARRA LATERAL
 with st.sidebar:
     st.write(f"Olá, **{name}**!")
     authenticator.logout('Sair', 'sidebar')
     st.divider()
-    if os.path.exists("logo.png"): st.image("logo.png", width="stretch")
-    else: st.title("Recanto da Lagoa")
+    if os.path.exists("logo.png"): 
+        st.image("logo.png", width="stretch")
+    else: 
+        st.title("Recanto da Lagoa")
 
 st.sidebar.title("Navegação")
 menu = st.sidebar.radio(
