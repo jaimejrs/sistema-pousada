@@ -18,7 +18,7 @@ except:
 
 credentials_copy = dict(config['credentials'])
 authenticator = stauth.Authenticate(
-    credentials_copy, config['name'], config['key'], config['expiry_days'], preauthorized={'emails': []}
+    credentials_copy, config['name'], config['key'], config['expiry_days']
 )
 
 name, authentication_status, username = authenticator.login('Entrar no Sistema', 'main')
