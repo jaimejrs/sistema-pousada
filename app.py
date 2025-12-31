@@ -1,26 +1,31 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 import os
+import copy
 from models import Session
 from utils import local_css
 from views import dashboard, mapa, reservas, clientes, quartos
 
-# -CONFIG
+# CONFIG
 st.set_page_config(page_title="Recanto da Lagoa", layout="wide", page_icon="🏖️")
 local_css()
 
-# AUTENTICAÇÃO 
+# AUTENTICAÇÃO
 try:
     config = st.secrets["auth"]
 except:
     st.error("Erro: arquivo secrets.toml não encontrado ou mal configurado.")
     st.stop()
 
-credentials_copy = dict(config['credentials'])
+credentials_copy = copy.deepcopy(config['credentials'])
 
 authenticator = stauth.Authenticate(
-    credentials_copy, config['name'], config['key'], config['expiry_days']
+    credentials_copy, 
+    config['name'], 
+    config['key'], 
+    config['expiry_days']
 )
+
 
 authenticator.login(location='main')
 
@@ -38,7 +43,9 @@ elif authentication_status is None:
 # BARRA LATERAL
 with st.sidebar:
     st.write(f"Olá, **{name}**!")
+    
     authenticator.logout('Sair', 'sidebar')
+    
     st.divider()
     if os.path.exists("logo.png"): 
         st.image("logo.png", width="stretch")
