@@ -1,7 +1,7 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 import os
-import copy
+import json
 from models import Session
 from utils import local_css
 from views import dashboard, mapa, reservas, clientes, quartos
@@ -17,7 +17,7 @@ except:
     st.error("Erro: arquivo secrets.toml não encontrado ou mal configurado.")
     st.stop()
 
-credentials_copy = copy.deepcopy(config['credentials'])
+credentials_copy = json.loads(json.dumps(config['credentials']))
 
 authenticator = stauth.Authenticate(
     credentials_copy, 
